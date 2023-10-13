@@ -1,7 +1,6 @@
 package com.example.lamproj;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -20,15 +19,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.lamproj.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMyLocationClickListener,
     OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback{
@@ -38,7 +38,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean permissionDenied = false;
 
-
+    private Polygon hexagonPolygon;
+    private static final LatLng BOLOGNA = new LatLng(44.496781, 11.356387);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +65,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         
 
         // Add a marker in Bologna and move the camera
-        LatLng bologna = new LatLng(44.496781, 11.356387);
-        mMap.addMarker(new MarkerOptions().position(bologna).title("Marker in Bologna"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bologna));
-
+        //LatLng bologna = new LatLng(44.496781, 11.356387);
+        mMap.addMarker(new MarkerOptions().position(BOLOGNA).title("Marker in Bologna"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(BOLOGNA));
+        /*
         LatLng upperLeft = new LatLng(44.5404, 11.2993);   // Adatta queste coordinate
         LatLng upperRight = new LatLng(44.5404, 11.4188);  // alle coordinate reali di Bologna
         LatLng lowerRight = new LatLng(44.4472, 11.4188);
@@ -77,8 +78,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .add(upperRight).add(lowerRight).add(lowerLeft);
         Polygon poligono = mMap.addPolygon(rectOptions);
         poligono.setStrokeColor(Color.BLUE);
+        */
 
+        hexagonPolygon = mMap.addPolygon(new PolygonOptions()
+                .addAll(createHexagon(BOLOGNA, 0.1)));
+        hexagonPolygon.setStrokeColor(Color.BLUE);
     }
+
+    /*
+    Utilizzo formula trigonometrica per calcolare la le coordinate dei punti in base all'angolo
+    e alla loro distanza dal centro.
+    Math.sin(angle) (o Math.cos(angle)): la variazione nella latitudine (o longitudine) è direttamente proporzionale alla distanza dalla
+                     posizione centrale e moltiplicandola per il seno (o coseno) dell'angolo.
+
+
+     */
+    private List<LatLng> createHexagon(LatLng center, double distance){
+        List<LatLng> hexagon = new ArrayList<>();
+        for(int i = 0; i < 6; i++){
+            double angle = Math.toRadians(i * 60);
+            double lat = center.latitude + distance * Math.sin(angle);
+            double lng = center.longitude + distance * Math.cos(angle);
+            hexagon.add(new LatLng(lat, lng));
+        }
+        hexagon.add(hexagon.get(0));
+        return hexagon;
+    }
+
+
+
     @SuppressLint("MissingPermission")
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
