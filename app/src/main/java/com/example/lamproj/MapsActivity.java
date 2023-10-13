@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
         
-        /*
+
         // Add a marker in Bologna and move the camera
         LatLng bologna = new LatLng(44.496781, 11.356387);
         mMap.addMarker(new MarkerOptions().position(bologna).title("Marker in Bologna"));
@@ -78,7 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Polygon poligono = mMap.addPolygon(rectOptions);
         poligono.setStrokeColor(Color.BLUE);
 
-        */
     }
     @SuppressLint("MissingPermission")
     private void enableMyLocation() {
