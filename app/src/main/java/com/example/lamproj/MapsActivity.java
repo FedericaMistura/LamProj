@@ -88,7 +88,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .addAll(createHexagon(BOLOGNA, 1000)));
         hexagonPolygon.setStrokeColor(Color.BLUE);
 
-        drawHorizontalHexagonGrid(BOLOGNA, 1000);
+        List<List<LatLng>> hexagons = drawHorizontalHexagonGrid(BOLOGNA, 1000);
+        for(List<LatLng> hexagon : hexagons){
+            PolygonOptions polygonOptions = new PolygonOptions()
+                    .addAll(hexagon)
+                    .strokeColor(Color.GREEN);
+
+            mMap.addPolygon(polygonOptions);
+        }
 
     }
 
@@ -105,19 +112,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return hexagon;
     }
 
-    private void drawHorizontalHexagonGrid(LatLng startPosition, int radius){
-        double width = radius * 2 * Math.sqrt(3) /2;
-        LatLng[] adjacentPositions = new LatLng[6];
+    private List<List<LatLng>> drawHorizontalHexagonGrid(LatLng startPosition, int radius){
+        double width = radius * 2 * Math.sqrt(3) / 2;
+        List<List<LatLng>> hexagons = new ArrayList<>();
 
-        for (int i = 0; i < 6; i++){
+        for(int i = 0; i < 6; i++){
             double angle = 60 * i;
-            LatLng adjacentPosition = SphericalUtil.computeOffset(startPosition, width, angle);
-            adjacentPositions[i] = adjacentPosition;
+            LatLng adjacentPosition = SphericalUtil.computeOffset(startPosition, width, angle + 30);
+            List<LatLng> hexagon = createHexagon(adjacentPosition, radius);
+            hexagons.add(hexagon);
         }
-
-        for(LatLng position : adjacentPositions){
-            createHexagon(position, radius);
-        }
+        return hexagons;
 
     }
 
