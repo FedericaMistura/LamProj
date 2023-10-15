@@ -19,6 +19,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.lamproj.tiles.TileGrid;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
@@ -72,6 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng BOLOGNA = new LatLng(44.496781, 11.356387);
         mMap.addMarker(new MarkerOptions().position(BOLOGNA).title("Marker in Bologna"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BOLOGNA, 7));
+
+        TileGrid tg=new TileGrid(BOLOGNA,10000.0,10000.0,1000);
+        tg.addToGoogleMap(mMap);
+
         /*
         LatLng upperLeft = new LatLng(44.5404, 11.2993);   // Adatta queste coordinate
         LatLng upperRight = new LatLng(44.5404, 11.4188);  // alle coordinate reali di Bologna
@@ -84,6 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         poligono.setStrokeColor(Color.BLUE);
         */
 
+        /*
         Polygon hexagonPolygon = mMap.addPolygon(new PolygonOptions()
                 .addAll(createHexagon(BOLOGNA, 1000)));
         hexagonPolygon.setStrokeColor(Color.BLUE);
@@ -96,6 +102,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             mMap.addPolygon(polygonOptions);
         }
+        */
+
 
     }
 

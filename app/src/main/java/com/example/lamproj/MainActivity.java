@@ -2,6 +2,7 @@ package com.example.lamproj;
 
 import android.os.Bundle;
 
+import com.example.lamproj.data.Sample;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import com.example.lamproj.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //implementazione accesso a database per testare
+            Sample s = new Sample();
+            s.uid=(int) (System.currentTimeMillis() & 0xfffffff);
+            s.latitude = 1;
+            s.longitude = 1;
+            App.A.sampleDao.insertAll(s);
+            List<Sample> samples = App.A.sampleDao.getAll();
+            //funzione di eliminazione
+            for (Sample x: samples) {
+                App.A.sampleDao.delete(x);
+            }
             return true;
         }
 
