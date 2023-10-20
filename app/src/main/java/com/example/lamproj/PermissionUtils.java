@@ -12,7 +12,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 public abstract class PermissionUtils {
-    public static void requestPermission(MapsActivity activity, int requestId, String permission, boolean finishActivity){
+    public static void requestPermission(MainActivity activity, int requestId, String permission, boolean finishActivity){
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)){
             PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity).show(activity.getSupportFragmentManager(), "dialog");
         } else {

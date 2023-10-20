@@ -6,9 +6,15 @@ import androidx.room.Room;
 
 import com.example.lamproj.data.SampleDB;
 import com.example.lamproj.data.SampleDao;
+import com.example.lamproj.gmap.MapManager;
+import com.example.lamproj.sensors.SensorHub;
+
 public class App extends Application{
     public SampleDB db;
     public SampleDao sampleDao;
+    public MapManager mapManager;
+    public SensorHub sensorHub;
+    public MainActivity context;
     public static App A;
 
     public App() {
@@ -20,6 +26,8 @@ public class App extends Application{
         db = Room.databaseBuilder(getApplicationContext(),
                 SampleDB.class, "test").allowMainThreadQueries().build();
         sampleDao = db.sampleDao();
+        mapManager=new MapManager();
+        sensorHub=new SensorHub();
     }
 
     @Override

@@ -9,12 +9,7 @@
         android:id="@+id/FirstFragment"
         android:name="com.example.lamproj.FirstFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/MapsActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_first"/>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.example.lamproj.SecondFragment"
@@ -25,10 +20,4 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
-    <activity
-        android:id="@+id/MapsActivity"
-        android:name="com.example.lamproj.MapsActivity"
-        android:label="Mappa"
-        tools:layout="@layout/activity_maps">
-    </activity>
 </navigation>
